@@ -19,5 +19,14 @@ public class MyBatisLogConsoleFilterTest {
         Assert.assertEquals(MyBatisLogConsoleFilter.parseSql("UPDATE mp_user SET name=? WHERE id=? AND name=?",
                         MyBatisLogConsoleFilter.parseParams("null, null, null")).toString(),
                 "UPDATE mp_user SET name=null WHERE id=null AND name=null");
+
+
+    }
+
+    @Test
+    public void testParamWiethParentheses() {
+        Assert.assertEquals(MyBatisLogConsoleFilter.parseSql("UPDATE mp_user SET name=? WHERE id=? AND name=?",
+                        MyBatisLogConsoleFilter.parseParams("null, null, stone(sh)(String)")).toString(),
+                "UPDATE mp_user SET name=null WHERE id=null AND name='stone(sh)'");
     }
 }

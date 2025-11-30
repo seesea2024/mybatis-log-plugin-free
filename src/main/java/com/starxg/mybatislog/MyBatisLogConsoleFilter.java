@@ -151,7 +151,12 @@ public class MyBatisLogConsoleFilter implements Filter {
 
         for (String s : strings) {
             String value = StringUtils.substringBeforeLast(s, "(");
-            String type = StringUtils.substringBetween(s, "(", ")");
+            // if parameter value has parenthesis, it will get wrong type taking the first parenthesis as type
+            //String type = StringUtils.substringBetween(s, "(", ")");
+            // it is safe to get type by last parenthesis
+            int lastOpen = s.lastIndexOf('(');
+            int lastClose = s.lastIndexOf(')');
+            String type = lastOpen != -1 && lastClose != -1 && lastOpen < lastClose ? s.substring(lastOpen + 1, lastClose) : null;
             if (StringUtils.isEmpty(type)) {
                 queue.offer(new AbstractMap.SimpleEntry<>(value, null));
             } else {
